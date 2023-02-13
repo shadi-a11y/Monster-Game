@@ -1,0 +1,99 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.banner {
+    width: 100vw;
+    height: 100px;
+    background-color: #7b0323;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.health {
+    margin: 20px auto;
+    width: 40vw;
+    height: 120px;
+    border: 1px solid gray;
+    border-radius: 20px;
+    box-shadow: 1px 1px #888888;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+progress {
+    background-color: #f3f3f3;
+    border: 0;
+    height: 30px;
+    border-radius: 9px;
+    width: 90%;
+    margin: 10px;
+  }
+
+.text {
+    font-size: 25px;
+}
+
+.buttons {
+    margin: 20px auto;
+    width: 40vw;
+    height: 140px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btn {
+    width: 200px;
+    height: 60px;
+    background-color: #301934;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.battle-log {
+    margin: 20px auto;
+    width: 40vw;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.result-section {
+    margin: 20px auto;
+    width: 40vw;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.monster-text {
+    color: yellow;
+}
+
+.player-text {
+    color: purple;
+}
+
+.healing {
+    color: green;
+}
+
+.dealing {
+    color: red;
+}
