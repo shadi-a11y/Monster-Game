@@ -97,3 +97,7 @@ progress {
 .dealing {
     color: red;
 }
+
+.battle-log-text {
+    padding-top: 15px;
+}
