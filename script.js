@@ -1,123 +1,125 @@
-let yourHealth = document.querySelector(".your-health");
-let monsterHealth = document.querySelector(".monster-health");
-let buttons = document.querySelector(".buttons");
-let result = document.querySelector(".battle-log");
-let section = document.querySelector(".section");
+const select = (selector) => document.querySelector(selector);
+
+let yourHealth = select(".your-health");
+let monsterHealth = select(".monster-health");
+let buttons = select(".buttons");
+let battleLogSection = select(".battle-log");
 let battleLog = [];
-let healCount = 0;
+let healCount = 3;
 
-const attack = document.querySelector(".attack");
-const specialAttack = document.querySelector(".special-attack");
-const heal = document.querySelector(".heal");
-const giveUp = document.querySelector(".give-up");
+
+const [attack, specialAttack, heal, giveUp] = document.querySelectorAll(".btn");
+
+//Creating the result section
 const resultSection = document.createElement("div");
-resultSection.className = "result-section";
-const h1 = document.createElement("h1");
-h1.textContent = "Game Over!";
-const h3 = document.createElement("h3");
-const button = document.createElement("button");
-button.className = "new btn";
-button.textContent = "New Game";
-resultSection.appendChild(h1);
-resultSection.appendChild(h3);
-resultSection.appendChild(button);
+resultSection.innerHTML = `
+    <h1>Game Over!</h1>
+    <h3></h3>
+    <button class="new btn">New Game</button>
+`;
+resultSection.classList.add("result-section");
 
-function end(whoWon){    
-    h3.textContent = whoWon;
+
+const end = (whoWon) => {
+    resultSection.querySelector("h3").textContent = whoWon;
     document.body.appendChild(resultSection);
-}
+    const newGameButton = select('.new');
+    newGameButton.addEventListener("click", () => {
+    restart();
+    resultSection.remove();
+})
+};
 
-function printBattleLog() {
-    result.innerHTML = battleLog;
-}
+//Function to print the battle log
+const printBattleLog = () => battleLogSection.innerHTML = battleLog.join("");
 
-function removeBattleLog() {
-    result.innerHTML = "";
-}
+//Function to remove the battle log
+const removeBattleLog = () => battleLogSection.innerHTML = "";
 
-function restart() {
-    monsterHealth.value = 100;
-    yourHealth.value = 100;
+//Restart function that returns all values to their initial state
+const restart = () => {
+    monsterHealth.value = yourHealth.value = 100;
     battleLog = [];
-    document.body.appendChild(buttons);
-}
+    document.body.insertBefore(buttons, battleLogSection);
+    healCount = 3;
+};
 
-function compare() {
-    if((monsterHealth.value <= 0) || (yourHealth.value <= 0))
-    {
-        if(monsterHealth.value < yourHealth.value)
-        {
-            buttons.remove();
-            end("You won!") 
-            removeBattleLog();
-        }
-        else if(monsterHealth.value == yourHealth.value) {
-            buttons.remove();
-            end("It's a draw!")
-            removeBattleLog();
-        }
-        else {
-            buttons.remove();
-            end("You lost :-(")
-            removeBattleLog();
-        }
+//Function to compare healths of monster & player
+const compare = () => {
+    if (monsterHealth.value <= 0 || yourHealth.value <= 0) {
+        if (monsterHealth.value < yourHealth.value) end("You won!");
+        else if (monsterHealth.value == yourHealth.value) end("It's a draw!");
+        else end("You lost :-(");
+        buttons.remove();
+        removeBattleLog();
     }
-}
+};
 
-attack.addEventListener("click", function() {
-    healCount--;
-    let x1 = Math.floor(Math.random() * 101);;
+attack.addEventListener("click", () => {
+    healCount = 3;
+    const x1 = Math.floor(Math.random() * 40) + 1;
+    const x2 = Math.floor(Math.random() * 40) + 1;
     monsterHealth.value -= x1;
-    let x2 = Math.floor(Math.random() * 101);;
     yourHealth.value -= x2;
-    let output;
-    output = `<div> <span class="monster-text">Monster </span> attacks and deals <span class="dealing">${x2}</span></div>`;
-    battleLog.push(output);
-    output = `<div> <span class="player-text">Player </span> attacks and deals <span class="dealing">${x1}</span></div>`;
+    const output = `
+        <div class="battle-log-text">
+            <span class="monster-text">Monster </span> attacks and deals
+            <span class="dealing">${x2}</span>
+        </div>
+        <div class="battle-log-text">
+            <span class="player-text">Player </span> attacks and deals
+            <span class="dealing">${x1}</span>
+        </div>
+    `;
     battleLog.push(output);
     printBattleLog();
     compare();
 });
 
-specialAttack.addEventListener("click", function() {
-    if(yourHealth.value <= (monsterHealth.value - 20)) {
-        healCount--;
-        let x3 = Math.floor(Math.random() * 101);;
+specialAttack.addEventListener("click", () => {
+    if (yourHealth.value <= monsterHealth.value - 20) {
+        healCount = 3;
+        const x3 = Math.floor(Math.random() * 40) + 1;
         monsterHealth.value -= x3;
-        let x4 = Math.floor(x3 - x3/3);
+        const x4 = Math.floor(Math.random() * x3) + 1;
         yourHealth.value -= x4;
-        let output;
-        output = `<div> <span class="monster-text">Monster </span> attacks and deals <span class="dealing">${x4}</span></div>`;
-        battleLog.push(output);
-        output = `<div> <span class="player-text">Player </span> attacks and deals <span class="dealing"${x3}</span></div>`;
+        const output = `
+            <div class="battle-log-text">
+                <span class="monster-text">Monster </span> attacks and deals
+                <span class="dealing">${x4}</span>
+            </div>
+            <div class="battle-log-text">
+                <span class="player-text">Player </span> attacks and deals
+                <span class="dealing">${x3}</span>
+            </div>
+        `;
         battleLog.push(output);
         printBattleLog();
         compare();
-    } else {
-        window.alert("You can not use the special attack right now!")
-    }
+    } else window.alert("You can not use the special attack right now!");
 });
 
-heal.addEventListener("click", function() {
-    let x5 = Math.floor(Math.random() * 101);;
-    if((yourHealth.value + x5) < 100 && healCount < 3) {
+
+heal.addEventListener("click", () => {
+    const x5 = Math.floor(Math.random() * 40) + 1;
+    if (yourHealth.value + x5 < 100 && healCount > 0) {
+        healCount--;
         yourHealth.value += x5; 
-        healCount++;
-        let output = `<div> <span class="player-text">Player</span> heals himself for <span class="healing"> ${x5} </span></div>`;
+        let output = `
+        <div class="battle-log-text"> 
+                <span class="player-text">Player</span> heals himself for <span class="healing"> ${x5} </span>
+        </div>
+        `;
         battleLog.push(output);
         printBattleLog();
-    } else {
-        window.alert("Try again!")
-    }
+    } else window.alert("Try again!")
 });
 
-giveUp.addEventListener("click", function() {
+giveUp.addEventListener("click", () => {
    buttons.remove();
    end("You lost....");
    removeBattleLog();
 });
 
-button.addEventListener("click", function() {
-    restart();
-    resultSection.remove();
-})
+
+
